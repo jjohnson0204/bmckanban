@@ -1,0 +1,25 @@
+.card{
+
+    padding: 15px;
+    background: #e2e3e4;
+    color: #080909;
+    margin-bottom: 10px;
+    cursor: move;
+    text-align: left;
+}
+.card .user p {
+
+    padding: 0;
+    margin: 0;
+    font-size: .75em;
+}
+.card .icon {
+
+    display: inline-block;
+    width: 10%;
+}
+
+.card .data {
+
+    display: inline-block;
+}
