@@ -1,44 +1,93 @@
-import logo from './logo.svg';
-import './App.css';
-import { Card } from "./Components/Card";
-import { Column } from './Components/Column';
-import { Board } from './Components/Board';
-const data = [
-  {
-    assignee: 'Jaye Johnson',
-    workorderID: 'WO0000000123',
-    woGroup: ['Analyst'],
-    summary: 'First card',
-    status: 'Assigned'
-  },
-  {
-    assignee: 'Jaye2 Johnson',
-    workorderID: 'WO0000000123',
-    woGroup: ['Analyst'],
-    summary: 'Second card',
-    status: 'Pending'
+import React, {Component} from 'react';
+import { EditText, EditTextarea } from 'react-edit-text';
+import 'react-edit-text/dist/index.css';
+import {DragDropContext} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import _ from 'lodash';
+import {Board} from './Components/Board';
+
+let _columnId = 0;
+let _cardId = 0;
+
+// initial cards not need here for visual representation
+const initialCards = Array.from({length: 18}).map(() => ({
+  id: ++_cardId,
+  title: `Card ${_cardId}`,
+  assignee: "Joe Johnson",
+  workOrderGroup: "Analyst"
+}));
+
+const initialColumns = ['Assigned', 'Pending', 'In Progress','Planning','Completed', 'Canceled'].map((title, i) => ({
+  id: _columnId++,
+  title,
+  cardIds: initialCards.slice(i * 3, i * 3 + 3).map(card => card.id),
+}));
+
+class App extends Component {
+  state = {
+    cards: initialCards,
+    columns: initialColumns,
+  };
+
+  addColumn = _title => {
+    const title = _title.trim();
+    if (!title) return;
+
+    const newColumn = {
+      id: ++_columnId,
+      title,
+      cardIds: [],
+    };
+    this.setState(state => ({
+      columns: [...state.columns, newColumn],
+    }));
+  };
+
+  addCard = (columnId, _title) => {
+    const title = _title.trim();
+    if (!title) return;
+
+    const newCard = {id: ++_cardId, title};
+    this.setState(state => ({
+      cards: [...state.cards, newCard],
+      columns: state.columns.map(
+        column =>
+          column.id === columnId
+            ? {...column, cardIds: [...column.cardIds, newCard.id]}
+            : column
+      ),
+    }));
+  };
+
+  moveCard = (cardId, destColumnId, index) => {
+    this.setState(state => ({
+      columns: state.columns.map(column => ({
+        ...column,
+        
+        cardIds: _.flowRight(
+          // 2) If this is the destination column, insert the cardId.
+          ids =>
+            column.id === destColumnId
+              ? [...ids.slice(0, index), cardId, ...ids.slice(index)]
+              : ids,
+          // 1) Remove the cardId for all columns
+          ids => ids.filter(id => id !== cardId)
+        )(column.cardIds),
+      })),
+    }));
+  };
+
+  render() {
+    return (
+      <Board
+        cards={this.state.cards}
+        columns={this.state.columns}
+        moveCard={this.moveCard}
+        addCard={this.addCard}
+        addColumn={this.addColumn}
+      />
+    );
   }
-]
-
-var workflow = 
-[
-  {status : 'Assigned',allowedTransition: ['Pending']},
-  {status : 'Pending',allowedTransition: ['In Process','Planning']},
-  {status : 'In Process',allowedTransition: ['Pending' ,'Completed','Canceled']},
-  {status : 'Planning',allowedTransition: ['Pending' ,'Completed','Canceled']}
-];
-
-function App() {
-  return (
-    <div className="App">
-      <Column cards= {data} status="Assigned" />
-      <Column cards= {data} status="Pending" />
-      <Column cards= {data} status="In Process" />
-      <Column cards= {data} status="Planning" />
-      <Column cards= {data} status="Completed" />
-      <Column cards= {data} status="Canceled" />
-    </div>
-  );
 }
 
-export default App;
+export default DragDropContext(HTML5Backend)(App);
