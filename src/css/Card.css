@@ -23,3 +23,8 @@
 
     display: inline-block;
 }
+
+.Card--spacer,
+  .Card--dragging {
+    opacity: 0;
+  }

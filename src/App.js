@@ -5,22 +5,22 @@ import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash';
 import {Board} from './Components/Board';
+import {workorders} from './Data/WO';
 
 let _columnId = 0;
 let _cardId = 0;
 
-// initial cards not need here for visual representation
-const initialCards = Array.from({length: 18}).map(() => ({
-  id: ++_cardId,
-  title: `Card ${_cardId}`,
-  assignee: "Joe Johnson",
-  workOrderGroup: "Analyst"
-}));
+// initial cards not need here for visual representationr
+const initialCards = workorders;
 
-const initialColumns = ['Assigned', 'Pending', 'In Progress','Planning','Completed', 'Canceled'].map((title, i) => ({
+const initialColumns = ['Assigned', 'Pending', 'In Process','Planning','Completed', 'Canceled'].map((title, i) => ({
   id: _columnId++,
   title,
-  cardIds: initialCards.slice(i * 3, i * 3 + 3).map(card => card.id),
+  cardIds: initialCards.filter((card) => {
+    return card.status == title;
+  }).map((card) => {
+      return card.id;
+  })
 }));
 
 class App extends Component {

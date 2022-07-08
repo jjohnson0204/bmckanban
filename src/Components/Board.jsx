@@ -17,6 +17,10 @@ export function Board({cards, columns, moveCard, addCard, addColumn}) {
         >
           {column.cardIds
             .map(cardId => cards.find(card => card.id === cardId))
+            .map((card) => {
+              card.status = column.title;
+              return card;
+            })
             .map((card, index) => (
               <DraggableCard
                 key={card.id}
@@ -24,6 +28,7 @@ export function Board({cards, columns, moveCard, addCard, addColumn}) {
                 columnId={column.id}
                 columnIndex={index}
                 title={card.title}
+                {...card}
                 moveCard={moveCard}
               />
             ))}

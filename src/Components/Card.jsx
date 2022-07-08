@@ -8,15 +8,15 @@ import "../css/Card.css"
 
 export function Card(props) {
   let [fullName, setFullname] = useState("")
-  const { assignee, workOrderGroup, workOrderId, summary, status } = props;
-  
+  const { isSpacer, assignee, workOrderGroup, workOrderId, summary, status } = props;
+
   return _.flowRight(props.connectDragSource, props.connectDropTarget)(
     <div
       className={cn('card', {
         'Card--dragging': props.isDragging,
         'Card--spacer': props.isSpacer,
-      })}
-    ><React.Fragment>
+      })} // If no WO have assignment catergory will show empty
+    >{!isSpacer ? <React.Fragment>
       <div className="Card__title"></div>
       <div className="icon"></div>
       <div className="data">
@@ -27,8 +27,9 @@ export function Card(props) {
         </div>
         <h4>Summary:</h4>
         <p> {summary}</p>
+        <p>{status}</p>
       </div>
-    </React.Fragment> 
+    </React.Fragment> : null }
     </div>
   );
 }
