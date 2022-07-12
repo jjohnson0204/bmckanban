@@ -2,10 +2,10 @@ import React from 'react';
 import {Column} from './Column';
 import {DraggableCard} from './Card';
 import {TextForm} from './TextForm';
-import "../css/Board.css";
+import "../CSS/Board.css";
 
 
-export function Board({cards, columns, moveCard, addCard, addColumn}) {
+export function Board({cards, columns, moveCard, addCard, addColumn, seachinput}) {
   return (
     <div className="Board">
       {columns.map(column => (

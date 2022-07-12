@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {DragSource, DropTarget} from 'react-dnd';
 import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
 import cn from 'classnames';
 import _ from 'lodash';
-import "../css/Card.css"
+import "../CSS/Card.css"
+import ReactTooltip from 'react-tooltip';
 
 export function Card(props) {
   let [fullName, setFullname] = useState("")
@@ -15,7 +16,10 @@ export function Card(props) {
       className={cn('card', {
         'Card--dragging': props.isDragging,
         'Card--spacer': props.isSpacer,
-      })} // If no WO have assignment catergory will show empty
+      })}
+      data-tip={status}
+
+      // If no WO have assignment catergory will show empty
     >{!isSpacer ? <React.Fragment>
       <div className="Card__title"></div>
       <div className="icon"></div>
@@ -27,8 +31,8 @@ export function Card(props) {
         </div>
         <h4>Summary:</h4>
         <p> {summary}</p>
-        <p>{status}</p>
       </div>
+      <ReactTooltip place='right' type='light' effect='float' />
     </React.Fragment> : null }
     </div>
   );

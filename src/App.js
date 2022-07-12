@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
-import { EditText, EditTextarea } from 'react-edit-text';
+// import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash';
 import {Board} from './Components/Board';
 import {workorders} from './Data/WO';
+// import SearchInput from './Components/Search';
+import Search from './Components/Search';
+
+
 
 let _columnId = 0;
 let _cardId = 0;
@@ -79,13 +83,12 @@ class App extends Component {
 
   render() {
     return (
-      <Board
+      <><Search /><Board
         cards={this.state.cards}
         columns={this.state.columns}
         moveCard={this.moveCard}
         addCard={this.addCard}
-        addColumn={this.addColumn}
-      />
+        addColumn={this.addColumn} /></>
     );
   }
 }

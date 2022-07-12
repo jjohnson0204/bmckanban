@@ -1,6 +1,6 @@
 import React from 'react';
 import {TextForm} from './TextForm';
-import "../css/Column.css"
+import "../CSS/Column.css"
 export function Column(props) {
   return (
     <div className="Column">
