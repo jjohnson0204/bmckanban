@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Column} from './Column';
 import {DraggableCard} from './Card';
 import {TextForm} from './TextForm';
 import "../CSS/Board.css";
+import { useLogin } from '../Hooks/useLogin';
+import { useEntries } from '../Hooks/useEntries';
 
 
-export function Board({cards, columns, moveCard, addCard, addColumn, seachinput}) {
+export function Board({ columns, moveCard, addCards, addCard, addColumn, seachinput}) {
+  const tokenIsSet = useLogin();
+  const cards = useEntries(tokenIsSet);
+  useEffect(()=>{
+    addCards(cards);
+  }, [cards])
+  // columns.forEach((column) => {
+
+  //   cards.map((card) => {
+  //     if(column.title == card.Status)
+  //       addCard(column.id, card)
+  //   })
+  // })
+  
   return (
     <div className="Board">
       {columns.map(column => (
+        console.log(columns),
         <Column
           key={column.id}
           title={column.title}
@@ -17,10 +33,10 @@ export function Board({cards, columns, moveCard, addCard, addColumn, seachinput}
         >
           {column.cardIds
             .map(cardId => cards.find(card => card.id === cardId))
-            .map((card) => {
-              card.status = column.title;
-              return card;
-            })
+            // .map((card) => {
+            //   card.Status = column.title;
+            //   return card;
+            // })
             .map((card, index) => (
               <DraggableCard
                 key={card.id}
@@ -28,7 +44,12 @@ export function Board({cards, columns, moveCard, addCard, addColumn, seachinput}
                 columnId={column.id}
                 columnIndex={index}
                 title={card.title}
-                {...card}
+                workOrderId = { card["Work Order ID"] }
+                workOrderGroup = {card["ASGRP"]} 
+                assignee = { card["Request Assignee"] }
+                summary = { card.Summary }
+                status = { card.Status }
+                statusReason = { card["Status Reason"]}
                 moveCard={moveCard}
               />
             ))}

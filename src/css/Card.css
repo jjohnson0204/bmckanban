@@ -20,10 +20,11 @@
 }
 
 .card .data {
-
-    display: inline-block;
+    display: block;
 }
-
+.card .summary {
+    word-wrap: break-word;
+}
 .Card--spacer,
   .Card--dragging {
     opacity: 0;

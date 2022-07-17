@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-// import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -15,16 +14,18 @@ let _columnId = 0;
 let _cardId = 0;
 
 // initial cards not need here for visual representationr
-const initialCards = workorders;
+const initialCards = [];
 
 const initialColumns = ['Assigned', 'Pending', 'In Process','Planning','Completed', 'Canceled'].map((title, i) => ({
   id: _columnId++,
   title,
-  cardIds: initialCards.filter((card) => {
-    return card.status == title;
-  }).map((card) => {
-      return card.id;
-  })
+  cardIds: []
+  // initialCards.filter((card) => {
+  //   return card.status == title;
+  // }).map((card) => {
+  //     card.id = card["Work Order ID"]
+  //     return card.id;
+  // })
 }));
 
 class App extends Component {
@@ -47,11 +48,25 @@ class App extends Component {
     }));
   };
 
-  addCard = (columnId, _title) => {
-    const title = _title.trim();
-    if (!title) return;
+  addCards = (cards) => {
+    console.log(cards)
+    this.setState(state => ({
+      cards: cards,
+      columns: state.columns.map(
+        column =>
+           ({...column, cardIds: [
+              ...column.cardIds, 
+              ...cards
+              .filter(card => card.Status == column.title )
+              .map(card => card.id)]
+          })
+            
+      ),
+    }));
+  }
 
-    const newCard = {id: ++_cardId, title};
+  addCard = (columnId, newCard) => {
+    console.log("adding cards")
     this.setState(state => ({
       cards: [...state.cards, newCard],
       columns: state.columns.map(
@@ -64,7 +79,14 @@ class App extends Component {
   };
 
   moveCard = (cardId, destColumnId, index) => {
+    console.log(cardId, destColumnId, index)
     this.setState(state => ({
+      cards: state.cards.map((card) => {
+        if(card.id == cardId){
+          card.Status = state.columns[destColumnId].title
+        }
+        return card;
+      }),
       columns: state.columns.map(column => ({
         ...column,
         
@@ -84,11 +106,11 @@ class App extends Component {
   render() {
     return (
       <><Search /><Board
-        cards={this.state.cards}
         columns={this.state.columns}
         moveCard={this.moveCard}
         addCard={this.addCard}
-        addColumn={this.addColumn} /></>
+        addColumn={this.addColumn}
+        addCards={this.addCards} /></>
     );
   }
 }

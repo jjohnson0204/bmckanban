@@ -9,7 +9,7 @@ import ReactTooltip from 'react-tooltip';
 
 export function Card(props) {
   let [fullName, setFullname] = useState("")
-  const { isSpacer, assignee, workOrderGroup, workOrderId, summary, status } = props;
+  const { isSpacer, assignee, workOrderGroup, workOrderId, summary, status, statusReason } = props;
 
   return _.flowRight(props.connectDragSource, props.connectDropTarget)(
     <div
@@ -30,7 +30,9 @@ export function Card(props) {
             <p>{workOrderGroup}</p>
         </div>
         <h4>Summary:</h4>
-        <p> {summary}</p>
+        <div className='summary'> {summary}</div>
+        <h4>Status Reason:</h4>
+        <p> {statusReason}</p>
       </div>
       <ReactTooltip place='right' type='light' effect='float' />
     </React.Fragment> : null }
