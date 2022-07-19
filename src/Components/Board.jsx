@@ -7,12 +7,13 @@ import { useLogin } from '../Hooks/useLogin';
 import { useEntries } from '../Hooks/useEntries';
 
 
-export function Board({ columns, moveCard, addCards, addCard, addColumn, seachinput}) {
+export function Board({ cards, columns, moveCard, addCards, addCard, addColumn, seachinput}) {
   const tokenIsSet = useLogin();
-  const cards = useEntries(tokenIsSet);
+  const entries = useEntries(tokenIsSet);
   useEffect(()=>{
-    addCards(cards);
-  }, [cards])
+    addCards(entries);
+  }, [entries])
+  console.log(cards)
   // columns.forEach((column) => {
 
   //   cards.map((card) => {
@@ -24,7 +25,7 @@ export function Board({ columns, moveCard, addCards, addCard, addColumn, seachin
   return (
     <div className="Board">
       {columns.map(column => (
-        console.log(columns),
+        // console.log(columns),
         <Column
           key={column.id}
           title={column.title}

@@ -16,7 +16,7 @@ let _cardId = 0;
 // initial cards not need here for visual representationr
 const initialCards = [];
 
-const initialColumns = ['Assigned', 'Pending', 'In Process','Planning','Completed', 'Canceled'].map((title, i) => ({
+const initialColumns = ['Assigned', 'Pending', 'In Progress','Planning','Completed', 'Cancelled', 'Rejected'].map((title, i) => ({
   id: _columnId++,
   title,
   cardIds: []
@@ -32,6 +32,7 @@ class App extends Component {
   state = {
     cards: initialCards,
     columns: initialColumns,
+    filteredCards: initialCards
   };
 
   addColumn = _title => {
@@ -49,12 +50,14 @@ class App extends Component {
   };
 
   addCards = (cards) => {
-    console.log(cards)
+    // console.log(cards)
     this.setState(state => ({
       cards: cards,
+      filteredCards: cards,
       columns: state.columns.map(
         column =>
-           ({...column, cardIds: [
+           ({...column, 
+            cardIds: [
               ...column.cardIds, 
               ...cards
               .filter(card => card.Status == column.title )
@@ -103,14 +106,48 @@ class App extends Component {
     }));
   };
 
+  filterCards = (value = "") => {
+    let cards = this.state.cards.filter((card)=> {
+      //filter by search terms
+      let isMatched = false;
+      let assignee = card["Request Assignee"];
+      if(assignee) {
+        //fuzzy search: If search has "Jay" and the cards assignee is "Jaye Johnson", it will match. 
+        let match = assignee.match(new RegExp(value, 'mi'));
+        isMatched = !!match || isMatched
+      } 
+      
+      let wog = card["ASGRP"]
+      if(wog) {
+        //fuzzy search: If search has "DOI" and the cards assignee is "Jaye Johnson", it will match. 
+        let match = wog.match(new RegExp(value, 'mi'));
+        isMatched = !!match || isMatched
+      } 
+      
+
+      return isMatched
+    });
+    this.setState({
+      filteredCards: cards,
+      columns: this.state.columns.map(column => ({
+        ...column,
+        cardIds: cards.filter(card => card.Status == column.title ).map(card => card.id )
+      }))
+    })
+  }
   render() {
     return (
-      <><Search /><Board
+      <div style={{ width: "100%", overflow: "auto"}}>
+        <Search filterCards={this.filterCards} />
+        <Board
+        cards={this.state.filteredCards}
         columns={this.state.columns}
         moveCard={this.moveCard}
         addCard={this.addCard}
         addColumn={this.addColumn}
-        addCards={this.addCards} /></>
+        addCards={this.addCards}
+        />
+      </div>
     );
   }
 }

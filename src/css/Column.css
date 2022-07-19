@@ -10,25 +10,25 @@
     color: black;
   }
   .Column:nth-child(1) .card{
-      box-shadow: -5px 0px 2px yellow;
+      box-shadow: 5px 2px 2px yellow;
   }
   .Column:nth-child(2) .card{
-    box-shadow: -5px 0px 2px orange;
+    box-shadow: 5px 2px 2px orange;
 }
 .Column:nth-child(3) .card{
-    box-shadow: -5px 0px 2px blue;
+    box-shadow: 5px 2px 2px blue;
 }
 .Column:nth-child(4) .card{
-    box-shadow: -5px 0px 2px purple;
+    box-shadow: 5px 2px 2px purple;
 }
 .Column:nth-child(5) .card{
-    box-shadow: -5px 0px 2px green;
+    box-shadow: 5px 2px 2px green;
 }
 .Column:nth-child(6) .card{
-    box-shadow: -5px 0px 2px red;
+    box-shadow: 5px 2px 2px red;
 }
 
 .Column_title {
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }

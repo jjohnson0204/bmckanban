@@ -1,6 +1,6 @@
 .card{
-
-    padding: 15px;
+    border-radius: 7px;
+    padding: 0 15px 5px;
     background: #e2e3e4;
     color: #080909;
     margin-bottom: 10px;
@@ -23,7 +23,9 @@
     display: block;
 }
 .card .summary {
-    word-wrap: break-word;
+    white-space: nowrap;
+    padding: 1px;
+
 }
 .Card--spacer,
   .Card--dragging {
