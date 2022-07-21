@@ -16,7 +16,7 @@ let _cardId = 0;
 // initial cards not need here for visual representationr
 const initialCards = [];
 
-const initialColumns = ['Assigned', 'Pending', 'In Progress','Planning','Completed', 'Cancelled', 'Rejected'].map((title, i) => ({
+const initialColumns = ['Assigned', 'Pending', 'In Progress','Planning','Completed', 'Waiting Approval', 'Cancelled', 'Rejected'].map((title, i) => ({
   id: _columnId++,
   title,
   cardIds: []
@@ -87,6 +87,7 @@ class App extends Component {
       cards: state.cards.map((card) => {
         if(card.id == cardId){
           card.Status = state.columns[destColumnId].title
+          card.statusReason = state.columns[destColumnId].title
         }
         return card;
       }),
@@ -134,6 +135,18 @@ class App extends Component {
         cardIds: cards.filter(card => card.Status == column.title ).map(card => card.id )
       }))
     })
+
+      
+  }
+
+updateCard = (updatedCard) => {
+  let card = this.state.card.update((card) => {
+      //update card summary and status reason fields
+        if(card.id == updatedCard.id) {
+          return {...card, ...updatedCard}
+        }
+        return card;
+  })
   }
   render() {
     return (
