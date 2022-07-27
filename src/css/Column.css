@@ -27,6 +27,12 @@
 .Column:nth-child(6) .card{
     box-shadow: 5px 2px 2px red;
 }
+.Column:nth-child(7) .card{
+    box-shadow: 5px 2px 2px red;
+}
+.Column:nth-child(8) .card{
+    box-shadow: 5px 2px 2px red;
+}
 
 .Column_title {
     font-size: 18px;

@@ -25,6 +25,51 @@ app.post('/search', async (req, res) => {
 //   res.send('Hello World!')
 })
 
+app.post('/create', async (req, res) => {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+    'Authorization': 'AR-JWT ' + token 
+  }
+  let workOrder = await fetch(url + '/arsys/v1/entry/WOI:WorkOrderInterface_Create/', {
+    headers,
+    method: "POST",
+    body: JSON.stringify({
+        "values": {
+            "z1D_Action": "CREATE",
+            ...req.body
+        }
+    }),
+    }).then((res)=>{
+        let resJson = res.json();
+        return resJson
+    })
+  res.json(workOrder);
+//   res.send('Hello World!')
+})
+
+app.post('/modify', async (req, res) => {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+    'Authorization': 'AR-JWT ' + token 
+  }
+  let workOrder = await fetch(url + '/arsys/v1/entry/WOI:WorkOrderInterface_Create/', {
+    headers,
+    method: "POST",
+    body: JSON.stringify({
+        "values": {
+            "z1D_Action": "MODIFY",
+            ...req.body
+        }
+    }),
+    }).then((res)=>{
+        let resJson = res.json();
+        return resJson
+    })
+  res.json(workOrder);
+//   res.send('Hello World!')
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

@@ -8,6 +8,7 @@ import _ from 'lodash';
 import "../CSS/Card.css"
 import ReactTooltip from 'react-tooltip';
 import { render } from '@testing-library/react';
+import FormReasons from './FormReasons';
 
 const reasons = [
   "None",
@@ -106,12 +107,13 @@ export function Card(props) {
           />
         </div>
         <h5>Status Reason:</h5>
-        <p> <select
+        <FormReasons currentStatus={status} workOrderId={workOrderId} />
+        {/* <p> <select
               style={{ width: "100%"}}
               value={statusReason}> 
               <option>None</option>
               {reasons.map(reason => <option>{reason}</option>)}
-          </select></p>
+          </select></p> */}
       </div>
       <ReactTooltip place='right' type='light' effect='float' />
     </React.Fragment> : null }

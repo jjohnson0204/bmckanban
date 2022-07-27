@@ -31,3 +31,8 @@
   .Card--dragging {
     opacity: 0;
   }
+
+  
+  select {
+    width: 100%;
+  }
