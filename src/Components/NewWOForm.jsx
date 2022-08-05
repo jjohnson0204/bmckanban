@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-export class NewWorkOrder extends Component {
+export class NewWOForm extends Component {
 
   constructor(props) {
     super(props);
@@ -14,18 +14,29 @@ export class NewWorkOrder extends Component {
         "Status": "Assigned",
         "Company": "",
         "Customer Company": "",
-        "Location Company": ""
+        "Location Company": "",
+        "Status Reason": ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event, value) {    this.setState({...this.state, [value]: event.target.value});  }
+  handleChange(value, event) {    this.setState({...this.state, [value]: event.target.value});  }
   handleSubmit(event) {
     alert('Status reason needed: ' + this.state.value);
     event.preventDefault();
-    
+    let formData = new FormData();
+    for(let [key, value] of Object.entries(this.state)) {
+      if(value) {
+        formData.append(key, value);
+      }
+    }
+    console.log(formData);
+
     let res = fetch("/create", {
+    headers: {
+      "Content-Type": "application/json"
+    },
     method: "POST",
     body: JSON.stringify(this.state),
     }).then((res)=>{
@@ -60,7 +71,7 @@ export class NewWorkOrder extends Component {
             type={"text"} 
             defaultValuevalue={this.state["First Name"]} 
             placeholder='Enter first name...' 
-            onChange={this.handleChange.bind(this)}>
+            onChange={this.handleChange.bind(this, "First Name")}>
           </input>
           <br />
         <label>Assignee Last Name:</label>
@@ -68,7 +79,7 @@ export class NewWorkOrder extends Component {
             type={"text"} 
             defaultValue={this.state["Last Name"]} 
             placeholder='Enter last name...' 
-            onChange={this.handleChange.bind(this)}>
+            onChange={this.handleChange.bind(this, "Last Name")}>
           </input>
           <br />
         <label>Customers First Name:</label>
@@ -76,7 +87,7 @@ export class NewWorkOrder extends Component {
             type={"text"} 
             defaultValue={this.state["Customer First Name"]} 
             placeholder='Enter customers first name...' 
-            onChange={this.handleChange.bind(this)}>
+            onChange={this.handleChange.bind(this, "Customer First Name")}>
           </input>
           <br />
         <label>Customers Last Name:</label>
@@ -84,7 +95,7 @@ export class NewWorkOrder extends Component {
             type={"text"} 
             defaultValue={this.state["Customer Last Name"]} 
             placeholder='Enter customers last name...' 
-            onChange={this.handleChange.bind(this)}>
+            onChange={this.handleChange.bind(this, "Customer Last Name")}>
           </input>
           <br />
         <label>Summary:</label>
@@ -92,17 +103,17 @@ export class NewWorkOrder extends Component {
             type={"text"} 
             defaultValue={this.state["Summary"]} 
             placeholder='Enter a summary for work order...' 
-            onChange={this.handleChange.bind(this)}>
+            onChange={this.handleChange.bind(this, "Summary")}>
           </input>
           <br />
-        <label>Status: </label> Assigned(Default)
+        {/* <label>Status: </label> Assigned(Default) */}
         <br />
         <label>Company:</label>
           <input 
             type={"text"} 
             defaultValue={this.state["Company"]} 
             placeholder='Enter the company name...' 
-            onChange={this.handleChange.bind(this)}>
+            onChange={this.handleChange.bind(this, "Company")}>
           </input>
           <br />
         <label>Customers Company:</label>
@@ -110,7 +121,7 @@ export class NewWorkOrder extends Component {
             type={"text"} 
             defaultValue={this.state["Customer Company"]} 
             placeholder='Enter the customer comany name...' 
-            onChange={this.handleChange.bind(this)}>
+            onChange={this.handleChange.bind(this, "Customer Company")}>
           </input>
           <br />
         <label>Location Company:</label>
@@ -118,7 +129,7 @@ export class NewWorkOrder extends Component {
             type={"text"} 
             defaultValue={this.state["Location Company"]} 
             placeholder='Provide a description of work order...' 
-            onChange={this.handleChange.bind(this)}>
+            onChange={this.handleChange.bind(this, "Location Company")}>
           </input>
           <br />
  
@@ -128,4 +139,4 @@ export class NewWorkOrder extends Component {
   }
 }
 
-export default NewWorkOrder;
+export default NewWOForm;

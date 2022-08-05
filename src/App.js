@@ -8,7 +8,8 @@ import {workorders} from './Data/WO';
 // import SearchInput from './Components/Search';
 import Search from './Components/Search';
 import FormReasons from './Components/FormReasons';
-import NewWorkOrder from './Components/NewWorkOrder';
+import NewWorkOrder from './Components/NewWOForm';
+import NWO from './Components/NewWO';
 
 
 let _columnId = 0;
@@ -17,7 +18,7 @@ let _cardId = 0;
 // initial cards not need here for visual representationr
 const initialCards = [];
 
-const initialColumns = ['Assigned', 'Pending', 'In Progress','Planning','Completed', 'Cancelled', 'New Workorder'].map((title, i) => ({
+const initialColumns = ['Assigned', 'Pending', 'In Progress','Planning','Completed', 'Cancelled'].map((title, i) => ({
   id: _columnId++,
   title,
   cardIds: []
@@ -154,7 +155,8 @@ updateCard = (updatedCard) => {
       <div style={{ width: "100%", overflow: "auto"}}>
         <Search filterCards={this.filterCards} />
         <FormReasons/>
-        <NewWorkOrder/>
+        <NWO/>
+        
         <Board
         cards={this.state.filteredCards}
         columns={this.state.columns}
