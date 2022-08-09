@@ -7,7 +7,7 @@ import { useLogin } from '../Hooks/useLogin';
 import { useEntries } from '../Hooks/useEntries';
 
 
-export function Board({ cards, columns, moveCard, addCards, addCard, addColumn, seachinput}) {
+export function Board({ cards, columns, moveCard, addCards, addCard, addColumn, setCard, seachinput}) {
   const tokenIsSet = useLogin();
   const entries = useEntries(tokenIsSet);
   useEffect(()=>{
@@ -45,6 +45,7 @@ export function Board({ cards, columns, moveCard, addCards, addCard, addColumn, 
                 columnId={column.id}
                 columnIndex={index}
                 title={card.title}
+                requestID = { card["Request ID"] }
                 workOrderId = { card["Work Order ID"] }
                 workOrderGroup = {card["ASGRP"]} 
                 assignee = { card["Request Assignee"] }
@@ -52,6 +53,7 @@ export function Board({ cards, columns, moveCard, addCards, addCard, addColumn, 
                 status = { card.Status }
                 statusReason = { card["Status Reason"]}
                 moveCard={moveCard}
+                setCard={setCard}
               />
             ))}
           {column.cardIds.length === 0 && (

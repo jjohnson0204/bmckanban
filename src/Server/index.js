@@ -5,7 +5,7 @@ const {getToken} = require("./getToken");
 const {getEntries} = require("./getEntries")
 const {getSearches} = require("./getSearches")
 const fetch = require("node-fetch");
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 
 const host = "https://helixtrialsjc333-dev-restapi.onbmc.com";
@@ -83,19 +83,31 @@ app.post('/modify', async (req, res) => {
     'Content-Type': 'application/json',
     'Authorization': 'AR-JWT ' + token 
   }
-  let workOrder = await fetch(url + '/arsys/v1/entry/WOI:WorkOrderInterface/', {
+  const modifyUrl = url + '/arsys/v1/entry/WOI:WorkOrderInterface/' + `${req.body.requestId}|${req.body.requestId}`;
+  console.log(modifyUrl)
+  let body = JSON.stringify({
+      "values": {
+          "z1D_Action": "MODIFY",
+          ...req.body.data
+      }
+  });
+  console.log(body)
+  let workOrder = await fetch(modifyUrl, {
     headers,
-    method: "POST",
-    body: JSON.stringify({
-        "values": {
-            "z1D_Action": "MODIFY",
-            ...req.body
-        }
-    }),
+    method: "PUT",
+    body,
     }).then((res)=>{
+      console.log("Request Made")
+      try{
         let resJson = res.json();
+        console.log("resonse has json")
         return resJson
-    })
+      }catch(e) {
+        console.log("resonse caught")
+        return Promise.resolve({ status: true })
+      }
+        
+    }).catch(e => Promise.resolve({ status: true }))
   res.json(workOrder);
 //   res.send('Hello World!')
 })

@@ -8,7 +8,7 @@ import {workorders} from './Data/WO';
 // import SearchInput from './Components/Search';
 import Search from './Components/Search';
 import FormReasons from './Components/FormReasons';
-import NewWorkOrder from './Components/NewWOForm';
+import NewWOForm from './Components/NewWOForm';
 import NWO from './Components/NewWO';
 
 
@@ -85,6 +85,10 @@ class App extends Component {
 
   moveCard = (cardId, destColumnId, index) => {
     console.log(cardId, destColumnId, index)
+    // let card = this.state.cards.find(card => card.id == cardId);
+    // // card = { ...card, Status: this.state.columns[destColumnId].title }
+    // console.log(card)
+    
     this.setState(state => ({
       cards: state.cards.map((card) => {
         if(card.id == cardId){
@@ -107,6 +111,7 @@ class App extends Component {
         )(column.cardIds),
       })),
     }));
+    
   };
 
   filterCards = (value = "") => {
@@ -141,6 +146,29 @@ class App extends Component {
       
   }
 
+  setCard = (cardId, destColumnId, index) => {
+    console.log(cardId, destColumnId, index)
+    let card = this.state.cards.find(card => card.id == cardId)
+    let body = {
+      data: {
+        Status: this.state.columns[destColumnId].title
+      },
+      requestId: card["Request ID"]
+    }
+    fetch('/modify', {
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST"
+    }).then((res)=> {
+      return res.json()
+    }).then((json) => {
+      console.log(json)
+    }).catch(()=>{
+      console.log("didnt work")
+    })
+  }
 updateCard = (updatedCard) => {
   let card = this.state.card.update((card) => {
       //update card summary and status reason fields
@@ -152,19 +180,23 @@ updateCard = (updatedCard) => {
   }
   render() {
     return (
-      <div style={{ width: "100%", overflow: "auto"}}>
-        <Search filterCards={this.filterCards} />
-        <FormReasons/>
-        <NWO/>
-        
-        <Board
-        cards={this.state.filteredCards}
-        columns={this.state.columns}
-        moveCard={this.moveCard}
-        addCard={this.addCard}
-        addColumn={this.addColumn}
-        addCards={this.addCards}
-        />
+      <div className='slider'>
+        <div style={{ width: "100%", height: '100vh', display: 'flex', flexDirection: 'column'}}>
+          <Search filterCards={this.filterCards} />
+          <NWO/>
+          <div className='scroll-box'>
+            <Board
+            cards={this.state.filteredCards}
+            columns={this.state.columns}
+            moveCard={this.moveCard}
+            addCard={this.addCard}
+            addColumn={this.addColumn}
+            addCards={this.addCards}
+            setCard={this.setCard}
+            />
+          </div>
+          
+        </div>
       </div>
     );
   }

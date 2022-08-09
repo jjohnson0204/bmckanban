@@ -106,14 +106,10 @@ export function Card(props) {
             onSave={handleSave}
           />
         </div>
-        <h5>Status Reason:</h5>
-        <FormReasons currentStatus={status} workOrderId={workOrderId} />
-        {/* <p> <select
-              style={{ width: "100%"}}
-              value={statusReason}> 
-              <option>None</option>
-              {reasons.map(reason => <option>{reason}</option>)}
-          </select></p> */}
+        <div className="statusreason">
+          <h5>Status Reason:</h5>
+          <p>{statusReason}</p>
+        </div>
       </div>
       <ReactTooltip place='right' type='light' effect='float' />
     </React.Fragment> : null }
@@ -129,9 +125,16 @@ export const DraggableCard = _.flowRight([
         const {columnId, columnIndex} = props;
         const draggingItem = monitor.getItem();
         if (draggingItem.id !== props.id) {
-          props.moveCard(draggingItem.id, columnId, columnIndex);
+          props.moveCard(draggingItem.id, columnId, columnIndex, draggingItem);
         }
       },
+      drop(props, monitor) {
+        const {columnId, columnIndex} = props;
+        const draggingItem = monitor.getItem();
+        console.log(draggingItem, columnId, columnIndex)
+        props.setCard(draggingItem.id, columnId, columnIndex);
+        
+      }
     },
     connect => ({
       connectDropTarget: connect.dropTarget(),
