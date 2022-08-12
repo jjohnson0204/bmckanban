@@ -1,6 +1,12 @@
 import { Component } from "react";
-
+import { EditText, EditTextarea } from 'react-edit-text';
 export class FormReasons extends Component {
+
+workOrderLog= {
+  Details: [
+    "z1D_Details"
+  ]
+}  
 reasons = {
   Assigned: [
     "None",
@@ -39,30 +45,60 @@ reasons = {
 }
   constructor(props) {
     super(props);
-    this.state = {value: 'None'};
+    this.state = {
+      reason: "None",
+      details: ""
+    }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {    this.setState({value: event.target.value});  }
+  handleChange(event) {  
+    if(event.target) {
+      let target = event.target 
+      this.setState({...this.state, reason: target.value});  
+    }else {
+      let { value } = event;
+      this.setState({...this.state, details: value })
+    }
+  }
   handleSubmit(event) {
-      alert('Status reason needed: ' + this.state.value);
-      event.preventDefault();
+    event.preventDefault();
+    // if(this.state.reason == "none"){
+    //   alert("Must provide a status reason");
+    //   return;
+    // }
+    if(!this.state.details) {
+      alert('Must Provide a worklog detail');
+      return;
+    }
+    let body = {
+      data: {
+        "Status Reason": this.state.reason,
+        "z1D_Details": this.state.details,
+        "Description": this.props.summary
+      },
+      requestId: this.props.requestId
+    }
+    console.log(body)
+      
       //this is where where do the post request
       //pull the dropdown value from this.state.value
       //work order id is in this.props.workOrderId
-      let res = fetch("/modify", {
+      fetch("/modify", {
           method: "POST",
-          body: JSON.stringify({
-            "Status Reason": this.state.value
-          }),
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body),
       }).then((res)=>{
           let resJson = res.json();
           return resJson
       }).then((res)=>{
-          if (res.status === 200) {
+          if (res.status) {
               // this.setReasons("None");
               console.log("Status reason updated successfully");
+              this.props.closeCard()
           } else {
               console.log("Some error occured, status reason unchanged");
           }
@@ -73,20 +109,26 @@ reasons = {
     } 
 
   render() {
-    let { currentStatus, workOrderId } = this.props;
-    if(!currentStatus) currentStatus = "Assigned";
-
-    let reasons = this.reasons[currentStatus] || [];
-
+    let { requestId, summary, status, closeCard } = this.props;
+    let reasons = this.reasons[status || "Assigned"]
     return (
       <form onSubmit={this.handleSubmit}>
-        <label>
-        </label>
+       
           Choose the reason:
-          <select value={this.state.value} onChange={this.handleChange.bind(this)}>
+          <select value={this.state.reason} onChange={this.handleChange.bind(this)} id="reason">
             {reasons.map((reason, i) => <option key={i}>{reason}</option>)}
           </select>
-        
+         <label>
+          Worklog Details: 
+        </label>
+        <div className='details'>
+          <EditText 
+            id="details"
+            placeholder="Enter worklog details here..."
+            defaultValue={this.state.details}
+            onSave={this.handleChange.bind(this)}
+          />
+        </div>
         <input type="submit" value="Submit" onSubmit={this.handleSubmit.bind(this)}/>
       </form>
     );

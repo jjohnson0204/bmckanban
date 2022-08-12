@@ -68,9 +68,21 @@ const reasons = [
   "Implementation Scheduled"
 ]
 export function Card(props) {
-  let [fullName, setFullname] = useState("")
-  const { isSpacer, assignee, workOrderGroup, workOrderId, summary, status, statusReason } = props;
-  
+  let [dragged, setDragged] = useState(false)
+  let [dropped, setDropped] = useState(false)
+  const { isSpacer, isDragging, assignee, workOrderGroup, workOrderId, summary, status, statusReason, requestID } = props;
+  useEffect(() =>{
+    if(isDragging == true) {
+      console.log("isDragging")
+      setDragged(true)
+    }
+    if(dragged && !isDragging) {
+      console.log("isDropped")
+      setDropped(true)
+      setDragged(false)
+    }
+  },
+  [isDragging, dragged, dropped])
   // handle for change of summary text.
   const [text, setText] =React.useState(summary); //Controll component
   const handleChange = (e) => {
@@ -110,6 +122,7 @@ export function Card(props) {
           <h5>Status Reason:</h5>
           <p>{statusReason}</p>
         </div>
+        {dropped ? <FormReasons requestId={requestID} summary={text} status={status} closeCard={()=>setDropped(false)}/> : null }
       </div>
       <ReactTooltip place='right' type='light' effect='float' />
     </React.Fragment> : null }
@@ -153,7 +166,7 @@ export const DraggableCard = _.flowRight([
     },
     (connect, monitor) => ({
       connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging(),
+      isDragging: monitor.isDragging()
     })
   ),
 ])(Card);

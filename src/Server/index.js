@@ -51,9 +51,8 @@ app.post('/create', async (req, res) => {
         "values": {
             "z1D_Action": "CREATE",
             "Status": "Assigned",
-            // "Status_Reason": "Initial Status",
             ...req.body,
-            
+            // "Status Reason": "Initial Status"
         }
     }),
     }).then((res)=>{

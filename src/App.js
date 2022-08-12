@@ -18,7 +18,7 @@ let _cardId = 0;
 // initial cards not need here for visual representationr
 const initialCards = [];
 
-const initialColumns = ['Assigned', 'Pending', 'In Progress','Planning','Completed', 'Cancelled'].map((title, i) => ({
+const initialColumns = ['Assigned','Planning','In Progress', 'Pending' ,'Completed', 'Cancelled'].map((title, i) => ({
   id: _columnId++,
   title,
   cardIds: []
@@ -164,6 +164,10 @@ class App extends Component {
     }).then((res)=> {
       return res.json()
     }).then((json) => {
+      if(!json.status) {
+        //handle error
+        // this.moveCard(cardId)
+      }
       console.log(json)
     }).catch(()=>{
       console.log("didnt work")

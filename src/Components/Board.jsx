@@ -45,6 +45,7 @@ export function Board({ cards, columns, moveCard, addCards, addCard, addColumn, 
                 columnId={column.id}
                 columnIndex={index}
                 title={card.title}
+                details = { card["z1d_Details"]}
                 requestID = { card["Request ID"] }
                 workOrderId = { card["Work Order ID"] }
                 workOrderGroup = {card["ASGRP"]} 
