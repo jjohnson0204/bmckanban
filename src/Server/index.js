@@ -4,6 +4,7 @@ const port = 9000;
 const {getToken} = require("./getToken");
 const {getEntries} = require("./getEntries")
 const {getSearches} = require("./getSearches")
+const {getCompanies} = require("./getCompanies")
 const fetch = require("node-fetch");
 var bodyParser = require('body-parser');
 
@@ -25,6 +26,12 @@ app.get('/entries', async (req, res) => {
   let entries = await getEntries(token);
   res.json(entries);
 //   res.send('Hello World!')
+})
+app.get('/companies', async (req, res) => {
+  let companies = await getCompanies(token);
+  res.json(companies);
+    // res.send('Hellow World!')
+  
 })
 
 

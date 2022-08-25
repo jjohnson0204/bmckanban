@@ -34,9 +34,10 @@ class App extends Component {
   state = {
     cards: initialCards,
     columns: initialColumns,
-    filteredCards: initialCards
+    filteredCards: initialCards,
+    companies: [],
+    isLoggedIn: false
   };
-
   addColumn = _title => {
     const title = _title.trim();
     if (!title) return;
@@ -182,14 +183,33 @@ updateCard = (updatedCard) => {
         return card;
   })
   }
+
+  getCompanies = () => {
+    console.log("calling getCompanies")
+    return fetch("/companies")
+            .then((entries)=> entries.json())
+            .then(entriesResponse =>{
+                let companies = entriesResponse?.entries.filter(entry => {
+                    return entry.values.Status == 'Enabled'
+                }).map((entry) => {
+                    return entry.values.Company;
+                });
+                return companies;
+            })
+            .then(companies => {
+              this.setState({...this.state, companies });
+            })
+            .catch(console.error)
+  }
   render() {
     return (
       <div className='slider'>
         <div style={{ width: "100%", height: '100vh', display: 'flex', flexDirection: 'column'}}>
           <Search filterCards={this.filterCards} />
-          <NWO/>
+          <NWO companies={this.state.companies}/>
           <div className='scroll-box'>
             <Board
+            getCompanies={this.getCompanies}
             cards={this.state.filteredCards}
             columns={this.state.columns}
             moveCard={this.moveCard}

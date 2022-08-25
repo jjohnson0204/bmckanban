@@ -7,12 +7,19 @@ import { useLogin } from '../Hooks/useLogin';
 import { useEntries } from '../Hooks/useEntries';
 
 
-export function Board({ cards, columns, moveCard, addCards, addCard, addColumn, setCard, seachinput}) {
+export function Board({ cards, columns, moveCard, addCards, addCard, addColumn, setCard, seachinput, getCompanies}) {
   const tokenIsSet = useLogin();
   const entries = useEntries(tokenIsSet);
   useEffect(()=>{
     addCards(entries);
   }, [entries])
+
+  useEffect(()=>{
+    if(tokenIsSet) {
+      console.log("Getting Companies", tokenIsSet);
+      getCompanies();
+    }
+  }, [tokenIsSet, getCompanies])
   console.log(cards)
   // columns.forEach((column) => {
 
@@ -65,9 +72,9 @@ export function Board({ cards, columns, moveCard, addCards, addCard, addColumn, 
           )}
         </Column>
       ))}
-      <div className="Column">
+      {/* <div className="Column">
         <TextForm onSubmit={addColumn} placeholder="Add Column..." />
-      </div>
+      </div> */}
     </div>
   );
 }

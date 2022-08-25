@@ -1,0 +1,50 @@
+
+  form {
+    box-sizing: border-box;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: hsl(0, 0%, 100%);
+    border: 4px solid hsl(0, 0%, 90%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: max-content;
+  }
+  select {
+    max-width: 170px;
+  }
+  div .customer, .notes, .assignee {
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: navy;
+    padding: 2rem;
+    border-radius: 2rem;
+    background-color: lightgray;
+  }
+  .customer {
+    grid-column: span 2;
+  }
+  .notes {
+    grid-column: span 2;
+  }
+  .assignee {
+    grid-column: span 2;
+  }
+  .full_width {
+    text-align: center;
+    width: 479px;
+
+  }
+  .submit {
+    background-color: rgb(108, 190, 245);
+  }
+  .reset {
+    background-color: rgb(132, 129, 129);
+  }
+
+  button {
+    border: none;
+    border-radius: 10%;
+    padding: 10px;
+    margin-right: 10px;
+  }

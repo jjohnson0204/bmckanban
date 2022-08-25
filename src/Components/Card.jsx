@@ -124,7 +124,7 @@ export function Card(props) {
         </div>
         {dropped ? <FormReasons requestId={requestID} summary={text} status={status} closeCard={()=>setDropped(false)}/> : null }
       </div>
-      <ReactTooltip place='right' type='light' effect='float' />
+      
     </React.Fragment> : null }
     </div>
   );

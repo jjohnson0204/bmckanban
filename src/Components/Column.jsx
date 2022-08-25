@@ -8,7 +8,6 @@ export function Column(props) {
       <div className="Column__title"
       style={{ fontWeight: "bold"}}>{props.title} <span style={{float: "right", fontWeight: "normal", fontStyle: "italic", fontSize: ".60em"}}> Quantity: {props.count}</span> </div>
       {props.children}
-      <TextForm onSubmit={props.addCard} placeholder="Add card..." />
     </div>
   );
 }
