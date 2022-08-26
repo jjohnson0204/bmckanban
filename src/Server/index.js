@@ -14,6 +14,7 @@ const url = host + "/api";
 
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(express.static('build'))
 
 let token;
 app.get('/login', async (req, res) => {
@@ -117,6 +118,11 @@ app.post('/modify', async (req, res) => {
   res.json(workOrder);
 //   res.send('Hello World!')
 })
+
+
+app.get("/", (req, res)=>{
+  res.sendFile('/index.html');
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
